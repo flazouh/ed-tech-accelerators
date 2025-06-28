@@ -41,6 +41,33 @@ func Divide(a, b float64) (float64, error) {
 	return a / b, nil
 }
 
+// Max returns the larger of two float64 numbers.
+// Returns a if a >= b, otherwise returns b.
+func Max(a, b float64) float64 {
+	if a >= b {
+		return a
+	}
+	return b
+}
+
+// Min returns the smaller of two float64 numbers.
+// Returns a if a <= b, otherwise returns b.
+func Min(a, b float64) float64 {
+	if a <= b {
+		return a
+	}
+	return b
+}
+
+// Abs returns the absolute value of a float64 number.
+// Returns the non-negative value of x.
+func Abs(x float64) float64 {
+	if x < 0 {
+		return -x
+	}
+	return x
+}
+
 func main() {
 	fmt.Println("Math Utils Package - Basic Mathematical Operations")
 	
@@ -61,4 +88,10 @@ func main() {
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 	}
+	
+	// Example usage of utility functions
+	fmt.Printf("Max(10, 5) = %.2f\n", Max(10, 5))
+	fmt.Printf("Min(10, 5) = %.2f\n", Min(10, 5))
+	fmt.Printf("Abs(-7.5) = %.2f\n", Abs(-7.5))
+	fmt.Printf("Abs(3.2) = %.2f\n", Abs(3.2))
 }

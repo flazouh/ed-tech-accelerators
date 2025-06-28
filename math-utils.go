@@ -75,46 +75,46 @@ func Factorial(n int) (int64, error) {
 	if n < 0 {
 		return 0, ErrNegativeFactorial
 	}
-	
+
 	if n == 0 || n == 1 {
 		return 1, nil
 	}
-	
+
 	result := int64(1)
 	for i := 2; i <= n; i++ {
 		result *= int64(i)
 	}
-	
+
 	return result, nil
 }
 
 func main() {
 	fmt.Println("Math Utils Package - Basic Mathematical Operations")
-	
+
 	// Example usage of arithmetic functions
 	fmt.Printf("Add(10, 5) = %.2f\n", Add(10, 5))
 	fmt.Printf("Subtract(10, 5) = %.2f\n", Subtract(10, 5))
 	fmt.Printf("Multiply(10, 5) = %.2f\n", Multiply(10, 5))
-	
+
 	result, err := Divide(10, 5)
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 	} else {
 		fmt.Printf("Divide(10, 5) = %.2f\n", result)
 	}
-	
+
 	// Example of division by zero error
 	_, err = Divide(10, 0)
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 	}
-	
+
 	// Example usage of utility functions
 	fmt.Printf("Max(10, 5) = %.2f\n", Max(10, 5))
 	fmt.Printf("Min(10, 5) = %.2f\n", Min(10, 5))
 	fmt.Printf("Abs(-7.5) = %.2f\n", Abs(-7.5))
 	fmt.Printf("Abs(3.2) = %.2f\n", Abs(3.2))
-	
+
 	// Example usage of factorial function
 	fact, err := Factorial(5)
 	if err != nil {
@@ -122,7 +122,7 @@ func main() {
 	} else {
 		fmt.Printf("Factorial(5) = %d\n", fact)
 	}
-	
+
 	// Example factorial of 0
 	fact, err = Factorial(0)
 	if err != nil {
@@ -130,7 +130,7 @@ func main() {
 	} else {
 		fmt.Printf("Factorial(0) = %d\n", fact)
 	}
-	
+
 	// Example of negative factorial error
 	_, err = Factorial(-3)
 	if err != nil {

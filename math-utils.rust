@@ -1,0 +1,239 @@
+//! # Math Utils - Comprehensive Math Utilities Library
+//!
+//! This is the main math-utils.rust file containing all math utility functions
+//! organized into different modules for better code organization.
+
+use std::collections::HashMap;
+
+/// Basic arithmetic operations
+pub mod arithmetic {
+    /// Adds two numbers
+    pub fn add(a: f64, b: f64) -> f64 {
+        a + b
+    }
+
+    /// Subtracts second number from first
+    pub fn subtract(a: f64, b: f64) -> f64 {
+        a - b
+    }
+
+    /// Multiplies two numbers
+    pub fn multiply(a: f64, b: f64) -> f64 {
+        a * b
+    }
+
+    /// Divides first number by second
+    pub fn divide(a: f64, b: f64) -> Result<f64, &'static str> {
+        if b == 0.0 {
+            Err("Division by zero")
+        } else {
+            Ok(a / b)
+        }
+    }
+}
+
+/// Advanced mathematical functions
+pub mod advanced {
+    /// Calculates power of a number
+    pub fn power(base: f64, exponent: f64) -> f64 {
+        base.powf(exponent)
+    }
+
+    /// Calculates square root
+    pub fn sqrt(n: f64) -> Result<f64, &'static str> {
+        if n < 0.0 {
+            Err("Cannot calculate square root of negative number")
+        } else {
+            Ok(n.sqrt())
+        }
+    }
+
+    /// Calculates factorial of a non-negative integer
+    pub fn factorial(n: u64) -> u64 {
+        match n {
+            0 | 1 => 1,
+            _ => n * factorial(n - 1)
+        }
+    }
+
+    /// Calculates Greatest Common Divisor using Euclidean algorithm
+    pub fn gcd(a: u64, b: u64) -> u64 {
+        if b == 0 {
+            a
+        } else {
+            gcd(b, a % b)
+        }
+    }
+
+    /// Calculates Least Common Multiple
+    pub fn lcm(a: u64, b: u64) -> u64 {
+        (a * b) / gcd(a, b)
+    }
+}
+
+/// Statistical functions
+pub mod statistics {
+    use std::collections::HashMap;
+
+    /// Calculates mean (average) of a slice of numbers
+    pub fn mean(data: &[f64]) -> Option<f64> {
+        if data.is_empty() {
+            None
+        } else {
+            Some(data.iter().sum::<f64>() / data.len() as f64)
+        }
+    }
+
+    /// Calculates median of a slice of numbers
+    pub fn median(data: &[f64]) -> Option<f64> {
+        if data.is_empty() {
+            return None;
+        }
+
+        let mut sorted_data = data.to_vec();
+        sorted_data.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        
+        let len = sorted_data.len();
+        if len % 2 == 0 {
+            Some((sorted_data[len / 2 - 1] + sorted_data[len / 2]) / 2.0)
+        } else {
+            Some(sorted_data[len / 2])
+        }
+    }
+
+    /// Calculates mode (most frequent value) of a slice of numbers
+    pub fn mode(data: &[f64]) -> Option<f64> {
+        if data.is_empty() {
+            return None;
+        }
+
+        let mut frequency = HashMap::new();
+        for &value in data {
+            *frequency.entry(value.to_bits()).or_insert(0) += 1;
+        }
+
+        frequency
+            .into_iter()
+            .max_by_key(|(_, count)| *count)
+            .map(|(bits, _)| f64::from_bits(bits))
+    }
+
+    /// Calculates standard deviation of a slice of numbers
+    pub fn standard_deviation(data: &[f64]) -> Option<f64> {
+        if data.len() < 2 {
+            return None;
+        }
+
+        let mean_value = mean(data)?;
+        let variance = data
+            .iter()
+            .map(|x| (x - mean_value).powi(2))
+            .sum::<f64>() / (data.len() - 1) as f64;
+        
+        Some(variance.sqrt())
+    }
+}
+
+/// Geometric calculations
+pub mod geometry {
+    use std::f64::consts::PI;
+
+    /// Calculates area of a circle
+    pub fn circle_area(radius: f64) -> Result<f64, &'static str> {
+        if radius < 0.0 {
+            Err("Radius cannot be negative")
+        } else {
+            Ok(PI * radius * radius)
+        }
+    }
+
+    /// Calculates circumference of a circle
+    pub fn circle_circumference(radius: f64) -> Result<f64, &'static str> {
+        if radius < 0.0 {
+            Err("Radius cannot be negative")
+        } else {
+            Ok(2.0 * PI * radius)
+        }
+    }
+
+    /// Calculates area of a rectangle
+    pub fn rectangle_area(width: f64, height: f64) -> Result<f64, &'static str> {
+        if width < 0.0 || height < 0.0 {
+            Err("Width and height must be non-negative")
+        } else {
+            Ok(width * height)
+        }
+    }
+
+    /// Calculates perimeter of a rectangle
+    pub fn rectangle_perimeter(width: f64, height: f64) -> Result<f64, &'static str> {
+        if width < 0.0 || height < 0.0 {
+            Err("Width and height must be non-negative")
+        } else {
+            Ok(2.0 * (width + height))
+        }
+    }
+
+    /// Calculates area of a triangle using Heron's formula
+    pub fn triangle_area(a: f64, b: f64, c: f64) -> Result<f64, &'static str> {
+        if a <= 0.0 || b <= 0.0 || c <= 0.0 {
+            return Err("All sides must be positive");
+        }
+        
+        if a + b <= c || a + c <= b || b + c <= a {
+            return Err("Invalid triangle: sum of any two sides must be greater than the third");
+        }
+
+        let s = (a + b + c) / 2.0;
+        let area = (s * (s - a) * (s - b) * (s - c)).sqrt();
+        Ok(area)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_arithmetic() {
+        assert_eq!(arithmetic::add(2.0, 3.0), 5.0);
+        assert_eq!(arithmetic::subtract(5.0, 3.0), 2.0);
+        assert_eq!(arithmetic::multiply(4.0, 3.0), 12.0);
+        assert_eq!(arithmetic::divide(10.0, 2.0).unwrap(), 5.0);
+        assert!(arithmetic::divide(10.0, 0.0).is_err());
+    }
+
+    #[test]
+    fn test_advanced() {
+        assert_eq!(advanced::power(2.0, 3.0), 8.0);
+        assert_eq!(advanced::sqrt(9.0).unwrap(), 3.0);
+        assert!(advanced::sqrt(-1.0).is_err());
+        assert_eq!(advanced::factorial(5), 120);
+        assert_eq!(advanced::gcd(48, 18), 6);
+        assert_eq!(advanced::lcm(4, 6), 12);
+    }
+
+    #[test]
+    fn test_statistics() {
+        let data = vec![1.0, 2.0, 3.0, 4.0, 5.0];
+        assert_eq!(statistics::mean(&data).unwrap(), 3.0);
+        assert_eq!(statistics::median(&data).unwrap(), 3.0);
+        
+        let data_with_mode = vec![1.0, 2.0, 2.0, 3.0];
+        assert_eq!(statistics::mode(&data_with_mode).unwrap(), 2.0);
+        
+        let data_for_std = vec![2.0, 4.0, 4.0, 4.0, 5.0, 5.0, 7.0, 9.0];
+        let std_dev = statistics::standard_deviation(&data_for_std).unwrap();
+        assert!((std_dev - 2.138).abs() < 0.01);
+    }
+
+    #[test]
+    fn test_geometry() {
+        assert!((geometry::circle_area(5.0).unwrap() - 78.54).abs() < 0.01);
+        assert!((geometry::circle_circumference(5.0).unwrap() - 31.42).abs() < 0.01);
+        assert_eq!(geometry::rectangle_area(4.0, 5.0).unwrap(), 20.0);
+        assert_eq!(geometry::rectangle_perimeter(4.0, 5.0).unwrap(), 18.0);
+        assert!((geometry::triangle_area(3.0, 4.0, 5.0).unwrap() - 6.0).abs() < 0.01);
+        assert!(geometry::triangle_area(1.0, 1.0, 3.0).is_err());
+    }
+}

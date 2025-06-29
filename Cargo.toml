@@ -1,0 +1,11 @@
+[package]
+name = "math-utils"
+version = "0.1.0"
+edition = "2021"
+authors = ["Claude <noreply@anthropic.com>"]
+description = "A comprehensive math utilities library in Rust"
+license = "MIT"
+
+[dependencies]
+
+[dev-dependencies]
